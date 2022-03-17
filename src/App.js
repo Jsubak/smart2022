@@ -1,42 +1,66 @@
-import dog from './images.jpg';
+import faker from '@faker-js/faker'; // 영문 버전
+import faker_ko from '@faker-js/faker/locale/ko'; // 한글 버전
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 import './App.css';
-import { faker } from '@faker-js/faker';
-
-
-// JSX
-const testData = [
-  {
-    text: "헌법재판소 재판관은 탄핵 또는 금고 이상의 형의 선고에 의하지 아니하고는 파면되지 아니한다.",
-    imgUrl: "https://blog.kakaocdn.net/dn/nPV8F/btqFjcUMxgD/kuKhzTe5vpFubOddP3tDD1/img.jpg"
-  },{
-    text :"사회적 특수계급의 제도는 인정되지 아니하며, 어떠한 형태로도 이를 창설할 수 없다.",
-    imgUrl: "https://i.pinimg.com/236x/8c/ae/01/8cae01232ca1ab2d68b8a9d63c7014ae.jpg"
-  },{
-    text: "국가안전보장에 관련되는 대외정책·군사정책과 국내정책의 수립에 관하여 국무회의의 심의에 앞서 대통령의 자문에 응하기 위하여 국가안전보장회의를 둔다.",
-    imgUrl: "https://i.pinimg.com/originals/02/82/fe/0282fee3be5e61bb6b0b7b6cfbc079e9.jpg"
-  }
-]
 
 function App() {
-  const h1Element = <h1>h1 제목 태크 입니다.</h1>;
-  const imgElement = <img src={dog} className="App-logo" alt="logo" />
+  const userDatas= [];
+
+  while(userDatas.length < 10) {
+    userDatas.push({
+      avatar: faker.image.avatar(),
+      name: `${faker_ko.name.lastName()}${faker_ko.name.firstName()}`,
+      email: faker.internet.email(),
+      jobTitle: faker.name.jobTitle(),
+      phoneNumber: faker.phone.phoneNumber()
+    })
+  }
+
+  const userCards = userDatas.map((userData, idx) => {
+    return <Card key= {idx} sx={{ maxWidth: 345 }} >
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            height="140"
+            image= {userData.avatar}
+            alt="green iguana"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h4" component="div">
+              {userData.name}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="div">  
+              {userData.jobTitle}
+            </Typography>
+            <Typography gutterBottom variant="h5" component="div">
+              {userData.email}
+            </Typography>
+            <Typography gutterBottom variant="h6" component="div">
+              {userData.phoneNumber}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              카드 만들기
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    
+  //  <div key={idx}>
+  //   <h4>{userData.jobTitle}</h4>
+  //    <img src={userData.avatar} alt="사용자 프로필용 아바타" />
+  //    <h5>{userData.name}</h5>
+  //    {userData.email} <br/>
+  //    {userData.phoneNo}
+  //  </div>
+  })
 
   return (
     <div className="App">
-      <header className="App-header">
-        { h1Element }
-        { imgElement }
-        <p>
-          한글로 바꿔보세요. <code>src/App.js</code> and save to reload.
-        </p>
-          {testData.map((contents)=>{
-            return <div>
-              <img src={faker.image.avatar()} alt="강아지 사진" />
-              {contents.text}
-              <img src={faker.image.cats()} alt="고양이 사진" />
-            </div>
-          })}
-      </header>
+      {userCards}
     </div>
   );
 }
