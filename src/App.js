@@ -16,7 +16,9 @@ function App() {
       name: `${faker_ko.name.lastName()}${faker_ko.name.firstName()}`,
       email: faker.internet.email(),
       jobTitle: faker.name.jobTitle(),
-      phoneNumber: faker.phone.phoneNumber()
+      phoneNumber: faker.phone.phoneNumber(),
+      music: faker.music.genre(),
+      address: faker.address.city()
     })
   }
 
@@ -36,14 +38,13 @@ function App() {
             <Typography gutterBottom variant="h5" component="div">  
               {userData.jobTitle}
             </Typography>
-            <Typography gutterBottom variant="h5" component="div">
-              {userData.email}
-            </Typography>
-            <Typography gutterBottom variant="h6" component="div">
-              {userData.phoneNumber}
+            <Typography gutterBottom component="div">
+              email : {userData.email} <br/>
+              phone : {userData.phoneNumber}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              카드 만들기
+              music : {userData.music} <br/>
+              address : {userData.address}
             </Typography>
           </CardContent>
         </CardActionArea>
