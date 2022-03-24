@@ -1,68 +1,58 @@
-import faker from '@faker-js/faker'; // 영문 버전
-import faker_ko from '@faker-js/faker/locale/ko'; // 한글 버전
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Container from '@mui/material/Container';
+import Switch from '@mui/material/Switch';
+import Box from '@mui/material/Box';
+
+import UserCardList from './components/UserCardList';
+import { makeUserDatas } from './Utils';
+
+
+const userDatas = makeUserDatas(5000);
+
 
 function App() {
-  const userDatas= [];
+  const [useDarkMode, setUseDarkMode] = useState(true);
 
-  while(userDatas.length < 10) {
-    userDatas.push({
-      avatar: faker.image.avatar(),
-      name: `${faker_ko.name.lastName()}${faker_ko.name.firstName()}`,
-      email: faker.internet.email(),
-      jobTitle: faker.name.jobTitle(),
-      phoneNumber: faker.phone.phoneNumber(),
-      music: faker.music.genre(),
-      address: faker.address.city()
-    })
+  const handleChange = (event) => {
+    console.log(event);
+    setUseDarkMode(event.target.checked);
+    // setUseDarkMode(useDarkMode ? false : true);
   }
 
-  const userCards = userDatas.map((userData, idx) => {
-    return <Card key= {idx} sx={{ maxWidth: 345 }} >
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            height="140"
-            image= {userData.avatar}
-            alt="green iguana"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h4" component="div">
-              {userData.name}
-            </Typography>
-            <Typography gutterBottom variant="h5" component="div">  
-              {userData.jobTitle}
-            </Typography>
-            <Typography gutterBottom component="div">
-              email : {userData.email} <br/>
-              phone : {userData.phoneNumber}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              music : {userData.music} <br/>
-              address : {userData.address}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    
-  //  <div key={idx}>
-  //   <h4>{userData.jobTitle}</h4>
-  //    <img src={userData.avatar} alt="사용자 프로필용 아바타" />
-  //    <h5>{userData.name}</h5>
-  //    {userData.email} <br/>
-  //    {userData.phoneNo}
-  //  </div>
-  })
+  useEffect(() => {
+    console.log("component did mount");
+  }, []);
+
+  useEffect(() => {
+    console.log(`theme 변경됨 -> ${useDarkMode}`);
+  }, [useDarkMode])
 
   return (
-    <div className="App">
-      {userCards}
-    </div>
+    <ThemeProvider theme={createTheme({
+        palette: {
+          mode: useDarkMode? 'dark' : 'light',
+        },
+      })
+    }>
+      <Box sx={{
+        height: '100%',
+        bgcolor: 'background.default',
+        color: 'text.primary',
+        p: 1,
+      }}>
+        <Switch
+          checked={useDarkMode}
+          onChange={handleChange}
+          color="secondary"
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        <Container maxWidth="lg" sx={{p:1}}>
+          <UserCardList userDatas={userDatas}/>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }
 
