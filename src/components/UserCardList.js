@@ -4,6 +4,7 @@ import Pagination from '@mui/material/Pagination';
 import UserCard from './UserCard';
 import { paginate } from '../Utils';
 
+
 function UserCardList (props) {
     const pageContentsCount = 9;
     const [pageNo, setPageNo] = useState(1);
